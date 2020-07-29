@@ -3,7 +3,7 @@ function goToAdmin(){
 }
 
 function goHome(){
-    window.location = "index.html"
+    window.location = "https://henry9836.github.io/bootstrapSandbox/"
 }
 
 function splashZone(){
