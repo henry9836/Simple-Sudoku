@@ -1,4 +1,4 @@
 # bootstrapSandbox
-Me working on bootstrap learning
+Me fiddling around with bootstrap
 
 [Go To Website](https://henry9836.github.io/bootstrapSandbox/)
