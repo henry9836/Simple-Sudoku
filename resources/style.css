@@ -1,0 +1,15 @@
+body {
+	color: gold;
+	background-image: url("https://fishandgame.org.nz/assets/Uploads/_resampled/ResizedImageWzYwMCwzMDFd/Rainbow-Hamish-0.jpg")
+}
+
+p {
+	font-size: 72px;
+	background: -webkit-linear-gradient(#ff0000, #00d4ff);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+h1 {
+	font-size: 100px;
+}
