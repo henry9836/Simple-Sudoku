@@ -1,6 +1,7 @@
 body {
-	color: gold;
-	background-image: url("https://fishandgame.org.nz/assets/Uploads/_resampled/ResizedImageWzYwMCwzMDFd/Rainbow-Hamish-0.jpg")
+	background-color: #1c1c1c;
+	color: white;
+	font-family: 'Alata', sans-serif;
 }
 
 p {
@@ -11,5 +12,12 @@ p {
 }
 
 h1 {
-	font-size: 100px;
+	font-size: 5vw;
+}
+
+th:nth-last-child(3n+4) {
+	border-right: solid;
+}
+tr:nth-last-child(3n+4) {
+	border-bottom: solid;
 }
