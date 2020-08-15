@@ -15,9 +15,13 @@ h1 {
 	font-size: 5vw;
 }
 
+.table {
+	margin: auto;
+}
+
 th:nth-last-child(3n+4) {
-	border-right: solid;
+	border-right: dashed;
 }
 tr:nth-last-child(3n+4) {
-	border-bottom: solid;
+	border-bottom: dashed;
 }
