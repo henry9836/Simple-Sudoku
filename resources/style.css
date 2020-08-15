@@ -4,13 +4,6 @@ body {
 	font-family: 'Alata', sans-serif;
 }
 
-p {
-	font-size: 72px;
-	background: -webkit-linear-gradient(#ff0000, #00d4ff);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
 h1 {
 	font-size: 5vw;
 }
