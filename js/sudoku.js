@@ -17,6 +17,16 @@ $(document).ready(function () {
         $(this).css("font-weight", "normal");
     });
 
+    $("small").on("mouseover", function () {
+        $(this).css("font-weight", "bold");
+        $(this).html("Go To My Github");
+    });
+
+    $("small").on("mouseleave", function () {
+        $(this).css("font-weight", "normal");
+        $(this).html("Built By Henry Oliver")
+    });
+
     $("small").on("click", function () {
         var validTab = window.open("https://github.com/henry9836");
         if (validTab) {
