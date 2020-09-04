@@ -4,7 +4,7 @@ $(document).ready(function () {
     console.log($("small").text());
     console.log("jQuery Done.");
 
-    var grid = new Array(new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9));
+    let grid = new Array(new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9));
 
     $("h1").on("click", function () {
         $(this).text("My Final Message Goodbye");
@@ -38,24 +38,106 @@ $(document).ready(function () {
         }
     });
 
-    $("#reset").on("click", function () {
-        console.log("reset pressed");
+    //Checks if a number can be placed in a position
+    function checkValidPosition(x, y, val) {
+        //if grid is not set to anything
+        if (grid[y][x] == 0) {
+            //Check vertical
+            for (var i = 0; i < grid.length; i++) {
+                if (grid[i][x] == val) {
+                    return false;
+                }
+            }
 
-        //init
+            //Check hozitonal
+            for (var i = 0; i < grid[x].length; i++) {
+                if (grid[y][i] == val) {
+                    return false;
+                }
+            }
+
+            //Find starting point to search cell
+            var searchX = 0;
+            var searchY = 0;
+
+            //X
+            if (3 < x <= 6) {
+                searchX = 3;
+            }
+            else {
+                searchX = 6;
+            }
+
+            //Y
+            if (3 < y <= 6) {
+                searcyY = 3;
+            }
+            else {
+                searchY = 6;
+            }
+
+
+            //Check cell
+            for (var tmpX = 0; tmpX < 3; tmpX++) {
+                for (var tmpY = 0; tmpY < 3; tmpY++) {
+                    if (grid[searchY + tmpY][searchX + tmpX] == val) {
+                        return false;
+                    }
+                }
+            }
+
+
+            //It is valid
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    //Reset Game
+    function reset(){
+        //Clear Values
         for (var i = 0; i < grid.length; i++) {
             for (var j = 0; j < grid[0].length; j++) {
-                grid[i][j] = String.valueOf(Math.floor(Math.random() * 8) + 1);
+                grid[i][j] = 0;
             }
         }
+
+        generate();
+    }
+
+    //Generate a grid
+    function generate() {
+
+        //Generate valid numbers
+        for (var i = 0; i < $("#diffSlider").val(); i++) {
+            var foundAValidPos = false;
+            var x = 0;
+            var y = 0;
+            var val = 1;
+            while (!foundAValidPos) {
+                x = Math.floor(Math.random() * 9);
+                y = Math.floor(Math.random() * 9);
+                val = Math.floor(Math.random() * 9) + 1;
+                foundAValidPos = checkValidPosition(x, y, val);
+                console.log(foundAValidPos);
+            }
+            grid[y][x] = val;
+        }
+
 
         for (var i = 0; i < grid.length; i++) {
             for (var j = 0; j < grid[0].length; j++) {
                 var element = "#" + i + j;
-                console.log(element);
-                $(element).val("4");
+                $(element).val(grid[i][j]);
             }
         }
+    }
 
+    $("#reset").on("click", function () {
+        console.log("reset pressed");
+        reset();
     });
 
 });
