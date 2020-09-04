@@ -23,7 +23,7 @@
     <div style="margin: 10vw"></div>
 
     <!-- Table -->
-    <div class="table-responsive">
+    <div class="table-responsive" style="text-align:center">
         <table class="table table-dark" style="width: 10vw">
             <tr class="active">
                 <th> <input type="number" max="9" min="1" value="0" id="00"> </input> </th>
@@ -129,12 +129,16 @@
         </table>
     </div>
 
-    <input type="range" class="custom-range" id="diffSlider" min="15" max="40"> </label>
+    <!-- Difficulty -->
+    <div>
+        <div id="diffText"> Error </div>
+        <input type="range" class="custom-range" id="diffSlider" min="18" max="45"> </label>
+    </div>
 
     <!-- Buttons -->
 
-    <button type="button" class="btn btn-danger" id="reset"> Reset Game </button>
-
+    <button type="button" class="btn btn-danger" id="reset"> New Game </button>
+    <button type="button" class="btn btn-info" id="solve"> Solve! </button>
     <!-- BOOTSTRAP JS FILES -->
     <!-- JQuery Uncompressed Used So There Is No Use Reimporting -->
     <!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>-->
