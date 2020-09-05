@@ -1,6 +1,7 @@
 let grid = new Array(new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9));
 let maxSolveSteps = 100000;
 var currentStep = 0;
+var currentDepth = 0;
 
 //Checks the grid to see if it had been solved
 function checkGridCondition() {
@@ -62,7 +63,7 @@ function checkGridCondition() {
 function solveRecursive() {
     currentStep++;
 
-    console.log("[" + currentStep.toString() + "/" + maxSolveSteps.toString() + "]Solving...");
+    console.log("[" + currentStep.toString() + "/" + maxSolveSteps.toString() + "]{" + currentDepth.toString() + "}Solving...");
 
     //Debug Grid
     //for (var y = 0; y < grid.length; y++) {
@@ -103,16 +104,17 @@ function solveRecursive() {
     }
 
     //Try and put numbers into the grid
-    for (var i = 0; i < 9; i++) {
+    for (var i = 1; i < 10; i++) {
         if (checkValidPosition(xSpot, ySpot, i)) {
             //Apply number
             grid[ySpot][xSpot] = i;
 
             console.log("found a valid number!");
-            for (var y = 0; y < grid.length; y++) {
-                console.info(grid[y]);
-            }
-            console.log("--------------------------")
+            currentDepth++;
+            //for (var y = 0; y < grid.length; y++) {
+            //    console.info(grid[y]);
+            //}
+            //console.log("--------------------------")
 
             //Continue Searching Downwards
             if (solveRecursive()) {
@@ -123,6 +125,7 @@ function solveRecursive() {
 
             //This branch failed so reset number
             grid[ySpot][xSpot] = 0;
+            currentDepth--;
         }
     }
     
@@ -146,6 +149,8 @@ function solve() {
     else {
         console.log("Solved!");
     }
+
+    updateGrid();
 
 }
 
@@ -200,6 +205,15 @@ function reset() {
     generate();
 }
 
+function updateGrid() {
+    for (var i = 0; i < grid.length; i++) {
+        for (var j = 0; j < grid[0].length; j++) {
+            var element = "#" + i + j;
+            $(element).val(grid[i][j]);
+        }
+    }
+}
+
 //Generate a grid
 function generate() {
 
@@ -226,12 +240,7 @@ function generate() {
     }
 
 
-    for (var i = 0; i < grid.length; i++) {
-        for (var j = 0; j < grid[0].length; j++) {
-            var element = "#" + i + j;
-            $(element).val(grid[i][j]);
-        }
-    }
+    updateGrid();
 }
 
 $(document).ready(function () {
