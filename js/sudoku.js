@@ -1,7 +1,7 @@
-let gridOLD = new Array(new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9));
+let grid = new Array(new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9));
 
 //Test Grid
-let grid = [
+let gridT = [
     [8, 0, 0, 4, 0, 6, 0, 7, 0],
     [0, 0, 0, 0, 0, 0, 4, 0, 0],
     [0, 1, 0, 0, 0, 0, 6, 5, 0],
@@ -217,7 +217,7 @@ function reset() {
     //Clear Values
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
-            gridOLD[i][j] = 0;
+            grid[i][j] = 0;
         }
     }
 
@@ -255,7 +255,7 @@ function generate() {
                 foundAValidPos = true;
             }
         }
-        gridOLD[y][x] = val;
+        grid[y][x] = val;
     }
 
 
