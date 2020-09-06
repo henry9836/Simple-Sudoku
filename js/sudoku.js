@@ -174,7 +174,7 @@ function checkGridCondition() {
                 //If it exists
                 if (grid[y][x] == nums[i]) {
                     //Remove element from nums and check next position
-                    grid.splice(i, 1);
+                    nums.splice(i, 1);
                     continue;
                 }
                 //There is a repeating number
@@ -195,7 +195,7 @@ function checkGridCondition() {
                 //If it exists
                 if (grid[y][x] == nums[i]) {
                     //Remove element from nums and check next position
-                    grid.splice(i, 1);
+                    nums.splice(i, 1);
                     continue;
                 }
                 //There is a repeating number
