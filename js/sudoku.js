@@ -386,20 +386,39 @@ function generate() {
             x = Math.floor(Math.random() * 9);
             y = Math.floor(Math.random() * 9);
 
+            //Break out of bad loop
+            if (counter > 75) {
+                //Find an empty spot
+                for (var xPos = 0; xPos < 9; xPos++) {
+                    for (var yPos = 0; yPos < 9; yPos++) {
+                        if (grid[yPos][xPos] == 0) {
+                            x = xPos;
+                            y = yPos;
+                        }
+                    }
+                }
+            }
+            if (counter > 100) {
+                break;
+            }
+
             if (grid[y][x] == 0) {
                 val = Math.floor(Math.random() * 9) + 1;
                 //foundAValidPos = checkValidPosition(x, y, val);
                 foundAValidPos = possible(x, y, val);
+                if (foundAValidPos) {
+                    break;
+                }
                 //console.log(foundAValidPos);
             }
             counter++;
-            //Break out of bad loop
-            if (counter > 100) {
-                break;
-            }
         }
         if (foundAValidPos) {
             grid[y][x] = val;
+        }
+        //Ran out of attempts to place numbers
+        else {
+            break;
         }
     }
 
