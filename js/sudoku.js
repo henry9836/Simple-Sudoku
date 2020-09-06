@@ -1,4 +1,25 @@
-let grid = new Array(new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9), new Array(9));
+//Grid
+let grid = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+
+let gridEmpty = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
 //Test Grid
 let gridT = [
@@ -12,9 +33,126 @@ let gridT = [
     [0, 0, 1, 0, 0, 0, 0, 0, 0],
     [3, 0, 0, 9, 0, 2, 0, 0, 5]];
 
-let maxSolveSteps = 50000;
+//Easy Test Grid
+let gridE = [
+    [0, 0, 5, 0, 0, 3, 7, 0, 0],
+    [9, 0, 0, 1, 0, 0, 3, 6, 0],
+    [0, 0, 3, 0, 8, 9, 0, 0, 0],
+    [3, 8, 2, 4, 0, 5, 0, 0, 0],
+    [0, 0, 1, 0, 7, 0, 4, 0, 0],
+    [0, 0, 0, 3, 0, 2, 5, 1, 8],
+    [0, 0, 0, 7, 2, 0, 6, 0, 0],
+    [0, 3, 4, 0, 0, 6, 0, 0, 2],
+    [0, 0, 6, 9, 0, 0, 8, 0, 0]];
+
+//Hard Test Grid
+let gridH = [
+    [0, 9, 0, 0, 1, 0, 4, 0, 0],
+    [0, 3, 0, 0, 0, 4, 0, 0, 0],
+    [0, 0, 7, 0, 0, 6, 0, 0, 0],
+    [0, 7, 0, 0, 0, 0, 6, 0, 5],
+    [0, 0, 2, 0, 7, 0, 1, 0, 0],
+    [8, 0, 9, 0, 0, 0, 0, 4, 0],
+    [2, 0, 4, 8, 0, 0, 3, 0, 0],
+    [0, 0, 0, 9, 0, 0, 0, 5, 0],
+    [0, 0, 6, 0, 3, 0, 0, 7, 0]];
+
+let maxSolveSteps = 100000;
 var currentStep = 0;
 var currentDepth = 0;
+
+//Testign With V Code
+function arrcopy(OGarr)
+{
+    var arr = OGarr;
+    var arr2 = [];
+
+    for (var i = 0; i < arr.length; i++) {
+        arr2[i] = arr[i].slice();
+    }
+
+
+    return (arr2);
+}
+
+//Tests algorthiums
+function testRun() {
+
+    console.log("======================");
+    console.log(" [ TEST RUN STARTED ]")
+    console.log("----------------------");
+    console.log("-- GRID PRESET 1 --");
+    loadNewGrid(1);
+    if (grid.length != 9 || grid[0].length != 9) {
+        throw 'Grid is corrupted!';
+    }   
+
+    solve();
+    console.log("-- GRID PRESET 2 --");
+    loadNewGrid(2);
+    if (grid.length != 9 || grid[0].length != 9) {
+        throw 'Grid is corrupted!';
+    }   
+
+    solve();
+    console.log("-- GRID PRESET 3 --");
+    loadNewGrid(3);
+    if (grid.length != 9 || grid[0].length != 9) {
+        throw 'Grid is corrupted!';
+    }   
+
+    solve();
+    console.log("-- GRID RANDOM 1 --");
+    reset();
+    if (grid.length != 9 || grid[0].length != 9) {
+        throw 'Grid is corrupted!';
+    }   
+
+    solve();
+    console.log("-- GRID RANDOM 2 --");
+    reset();
+    if (grid.length != 9 || grid[0].length != 9) {
+        throw 'Grid is corrupted!';
+    }   
+
+    solve();
+    console.log("-- GRID RANDOM 3 --");
+    reset();
+    if (grid.length != 9 || grid[0].length != 9) {
+        throw 'Grid is corrupted!';
+    }   
+
+    solve();
+    console.log("======================");
+    console.log(" [ TEST RUN END ]")
+    console.log("======================");
+
+}
+
+//Loads on a new grid for testing
+function loadNewGrid(mode) {
+
+    grid = gridEmpty;
+
+    if (mode == 1) {
+        grid = arrcopy(gridT);
+    }
+    else if (mode == 2) {
+        grid = arrcopy(gridE);
+    }
+    else if (mode == 3) {
+        grid = arrcopy(gridH);
+    }
+
+    if (grid.length != 9 || grid[0].length != 9) {
+        throw 'Grid is corrupted!';
+    }   
+
+    console.log("Switched Grid");
+    updateGrid();
+
+}
+
 
 //Checks the grid to see if it had been solved
 function checkGridCondition() {
@@ -79,20 +217,19 @@ function solveRecursive() {
 
     currentStep++;
 
-    //console.log("[" + currentStep.toString() + "/" + maxSolveSteps.toString() + "]{" + currentDepth.toString() + "}Solving...");
+    if (grid.length != 9 || grid[0].length != 9) {
+        throw 'Grid is corrupted!';
+    }
 
-    //console.log("------------------------------------");
-
-
-    //Iterate through each x and y positioning trying out each numbe
-    for (var x = 0; x < grid[0].length; x++) {
-        for (var y = 0; y < grid.length; y++) {
+    //Iterate through each x and y positioning trying out each number
+    for (var x = 0; x < 9; x++) {
+        for (var y = 0; y < 9; y++) {
             //if the position is not set to a number
             if (grid[y][x] == 0) {
                 //Try each number out
                 for (var i = 1; i < 10; i++) {
                     //If we can use a number
-                    if (checkValidPosition(x, y, i)) {
+                    if (possible(x, y, i)) {
                         currentDepth++;
 
                         //Set new number
@@ -154,6 +291,11 @@ function possible(x, y, n) {
 function solve() {
     //Reset step counter
     currentStep = 0;
+    currentDepth = 0;
+
+    if (grid.length != 9 || grid[0].length != 9) {
+        throw 'Grid is corrupted!';
+    }
 
     //While the grid is not solved and we have not exceeded our step count
     while (!checkGridCondition() && currentStep < maxSolveSteps) {
@@ -178,14 +320,14 @@ function checkValidPosition(x, y, val) {
     //if grid is not set to anything
     if (grid[y][x] == 0) {
         //Check vertical
-        for (var i = 0; i < grid.length; i++) {
+        for (var i = 0; i < 9; i++) {
             if (grid[i][x] == val) {
                 return false;
             }
         }
 
         //Check hozitonal
-        for (var i = 0; i < grid[x].length; i++) {
+        for (var i = 0; i < 9; i++) {
             if (grid[y][i] == val) {
                 return false;
             }
@@ -215,8 +357,8 @@ function checkValidPosition(x, y, val) {
 //Reset Game
 function reset() {
     //Clear Values
-    for (var i = 0; i < grid.length; i++) {
-        for (var j = 0; j < grid[0].length; j++) {
+    for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
             grid[i][j] = 0;
         }
     }
@@ -225,8 +367,8 @@ function reset() {
 }
 
 function updateGrid() {
-    for (var i = 0; i < grid.length; i++) {
-        for (var j = 0; j < grid[0].length; j++) {
+    for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
             var element = "#" + i + j;
             $(element).val(grid[i][j]);
         }
@@ -246,16 +388,22 @@ function generate() {
         while (!foundAValidPos) {
             x = Math.floor(Math.random() * 9);
             y = Math.floor(Math.random() * 9);
-            val = Math.floor(Math.random() * 9) + 1;
-            foundAValidPos = checkValidPosition(x, y, val);
-            console.log(foundAValidPos);
+
+            if (grid[y][x] == 0) {
+                val = Math.floor(Math.random() * 9) + 1;
+                //foundAValidPos = checkValidPosition(x, y, val);
+                foundAValidPos = possible(x, y, val);
+                //console.log(foundAValidPos);
+            }
             counter++;
             //Break out of bad loop
             if (counter > 100) {
-                foundAValidPos = true;
+                break;
             }
         }
-        grid[y][x] = val;
+        if (foundAValidPos) {
+            grid[y][x] = val;
+        }
     }
 
 
