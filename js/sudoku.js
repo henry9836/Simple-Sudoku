@@ -1,5 +1,5 @@
 //Grid
-let grid = [
+grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -10,7 +10,8 @@ let grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
-let gridEmpty = [
+//Empty Grid For Reseting
+gridEmpty = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -34,7 +35,7 @@ let gridT = [
     [3, 0, 0, 9, 0, 2, 0, 0, 5]];
 
 //Easy Test Grid
-let gridE = [
+gridE = [
     [0, 0, 5, 0, 0, 3, 7, 0, 0],
     [9, 0, 0, 1, 0, 0, 3, 6, 0],
     [0, 0, 3, 0, 8, 9, 0, 0, 0],
@@ -46,7 +47,7 @@ let gridE = [
     [0, 0, 6, 9, 0, 0, 8, 0, 0]];
 
 //Hard Test Grid
-let gridH = [
+gridH = [
     [0, 9, 0, 0, 1, 0, 4, 0, 0],
     [0, 3, 0, 0, 0, 4, 0, 0, 0],
     [0, 0, 7, 0, 0, 6, 0, 0, 0],
@@ -63,13 +64,10 @@ var currentDepth = 0;
 
 //Replaces a grid
 function replaceGrid(newGrid) { 
-
     var tmp = [];
-
     for (var i = 0; i < newGrid.length; i++) {
         tmp[i] = newGrid[i].slice();
     }
-
     return tmp;
 }
 
