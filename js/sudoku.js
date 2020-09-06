@@ -79,9 +79,9 @@ function solveRecursive() {
 
     currentStep++;
 
-    console.log("[" + currentStep.toString() + "/" + maxSolveSteps.toString() + "]{" + currentDepth.toString() + "}Solving...");
+    //console.log("[" + currentStep.toString() + "/" + maxSolveSteps.toString() + "]{" + currentDepth.toString() + "}Solving...");
 
-    console.log("------------------------------------");
+    //console.log("------------------------------------");
 
 
     //Iterate through each x and y positioning trying out each numbe
@@ -160,10 +160,6 @@ function solve() {
         if (solveRecursive()) {
             break;
         }
-        //if (solveE()) {
-        //    break;
-        //}
-        //solveRecursive();
     }
 
     if (currentStep >= maxSolveSteps) {
