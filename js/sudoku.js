@@ -61,18 +61,16 @@ let maxSolveSteps = 100000;
 var currentStep = 0;
 var currentDepth = 0;
 
-//Testign With V Code
-function arrcopy(OGarr)
-{
-    var arr = OGarr;
-    var arr2 = [];
+//Replaces a grid
+function replaceGrid(newGrid) { 
 
-    for (var i = 0; i < arr.length; i++) {
-        arr2[i] = arr[i].slice();
+    var tmp = [];
+
+    for (var i = 0; i < newGrid.length; i++) {
+        tmp[i] = newGrid[i].slice();
     }
 
-
-    return (arr2);
+    return tmp;
 }
 
 //Tests algorthiums
@@ -129,19 +127,25 @@ function testRun() {
 
 }
 
+function clearGrid() {
+
+    grid = replaceGrid(gridEmpty);
+
+}
+
 //Loads on a new grid for testing
 function loadNewGrid(mode) {
 
-    grid = gridEmpty;
+    clearGrid();
 
     if (mode == 1) {
-        grid = arrcopy(gridT);
+        grid = replaceGrid(gridT);
     }
     else if (mode == 2) {
-        grid = arrcopy(gridE);
+        grid = replaceGrid(gridE);
     }
     else if (mode == 3) {
-        grid = arrcopy(gridH);
+        grid = replaceGrid(gridH);
     }
 
     if (grid.length != 9 || grid[0].length != 9) {
@@ -157,12 +161,12 @@ function loadNewGrid(mode) {
 //Checks the grid to see if it had been solved
 function checkGridCondition() {
     //Check Vertial
-    for (var x = 0; x < grid[0].length; x++) {
+    for (var x = 0; x < 9; x++) {
         let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         //For each y pos in the column
-        for (var y = 0; y < grid.length; y++) {
+        for (var y = 0; y < 9; y++) {
             //For each element of nums
-            for (var i = 0; i < nums.length; i++) {
+            for (var i = 1; i < nums.length; i++) {
                 
                 //If it is zero then it is not solved
                 if (grid[y][x] == 0) {
@@ -184,12 +188,12 @@ function checkGridCondition() {
     }
 
     //Check Hoizontal
-    for (var y = 0; y < grid.length; y++) {
+    for (var y = 0; y < 9; y++) {
         let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         //For each y pos in the column
-        for (var x = 0; x < grid[0].length; x++) {
+        for (var x = 0; x < 9; x++) {
             //For each element of nums
-            for (var i = 0; i < nums.length; i++) {
+            for (var i = 1; i < nums.length; i++) {
                 //If it exists
                 if (grid[y][x] == nums[i]) {
                     //Remove element from nums and check next position
@@ -357,12 +361,7 @@ function checkValidPosition(x, y, val) {
 //Reset Game
 function reset() {
     //Clear Values
-    for (var i = 0; i < 9; i++) {
-        for (var j = 0; j < 9; j++) {
-            grid[i][j] = 0;
-        }
-    }
-
+    clearGrid();
     generate();
 }
 
