@@ -177,8 +177,8 @@ function checkGridCondition() {
                     nums.splice(i, 1);
                     continue;
                 }
-                //There is a repeating number
-                else {
+                //If we have exhausted our list of elements then there is a repeating number
+                else if (i >= nums.length) {
                     return false;
                 }
             }
@@ -198,8 +198,8 @@ function checkGridCondition() {
                     nums.splice(i, 1);
                     continue;
                 }
-                //There is a repeating number
-                else {
+                //If we have exhausted our list of elements then there is a repeating number
+                else if (i >= nums.length) {
                     return false;
                 }
             }
@@ -207,7 +207,36 @@ function checkGridCondition() {
     }
 
     //Check Grid
-    //To do
+
+    for (var y = 0; y < 9; y++) {
+        let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        //For each y pos in the column
+        for (var x = 0; x < 9; x++) {
+            //Find starting point to search cell
+            let topCol = Math.floor(x / 3) * 3;
+            let topRow = Math.floor(y / 3) * 3;
+
+            //Search the cell for the same value
+            for (var yPos = 0; yPos < 3; yPos++) {
+                for (var xPos = 0; xPos < 3; xPos++) {
+                    //For each element of nums
+                    for (var i = 1; i < nums.length; i++) {
+                        //If it exists
+                        if (grid[y][x] == nums[i]) {
+                            //Remove element from nums and check next position
+                            nums.splice(i, 1);
+                            continue;
+                        }
+                        //If we have exhausted our list of elements then there is a repeating number
+                        else if (i >= nums.length) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     //If everything is okay then we have solved the puzzle
     return true;
@@ -417,7 +446,7 @@ $(document).ready(function () {
 
     $("small").on("mouseover", function () {
         $(this).css("font-weight", "bold");
-        $(this).html("Go To My Github");
+        $(this).html("GitHub Page");
     });
 
     $("small").on("mouseleave", function () {
@@ -442,6 +471,16 @@ $(document).ready(function () {
     $("#solve").on("click", function () {
         console.log("solve pressed");
         solve();
+    });
+
+    $("#submit").on("click", function () {
+        console.log("submit pressed");
+        if (checkGridCondition()) {
+            console.log("YOU DID IT!");
+        }
+        else {
+            console.log("Grid not solved")
+        }
     });
 
     //Random Slider Value
