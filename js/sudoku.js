@@ -231,7 +231,7 @@ function solveRecursive() {
                 //Try each number out
                 for (var i = 1; i < 10; i++) {
                     //If we can use a number
-                    if (possible(x, y, i)) {
+                    if (checkValidPosition(x, y, i)) {
                         currentDepth++;
 
                         //Set new number
@@ -259,35 +259,6 @@ function solveRecursive() {
     console.log("SOLUTION FOUND, PUZZLE IS NOW SOLVED!!!");
     return true;
 }
-
-
-//EXAMPLE TEST
-
-
-function possible(x, y, n) {
-    for (let i = 0; i < 9; i++) {
-        if (grid[y][i] === n) {
-            return false
-        }
-    }
-    for (let i = 0; i < 9; i++) {
-        if (grid[i][x] === n) {
-            return false
-        }
-    }
-    let x0 = Math.floor(x / 3) * 3;
-    let y0 = Math.floor(y / 3) * 3;
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            if (grid[y0 + i][x0 + j] === n) {
-                return false
-            }
-        }
-    }
-    return true;
-}
-
-//EXAMPLE END
 
 //Solves the sudoku puzzle
 function solve() {
@@ -336,8 +307,8 @@ function checkValidPosition(x, y, val) {
         }
 
         //Find starting point to search cell
-        var topRow = y - (y % 3);
-        var topCol = x - (x % 3);
+        let topCol = Math.floor(x / 3) * 3;
+        let topRow = Math.floor(y / 3) * 3;
 
         //Search the cell for the same value
         for (var yPos = 0; yPos < 3; yPos++) {
@@ -404,8 +375,7 @@ function generate() {
 
             if (grid[y][x] == 0) {
                 val = Math.floor(Math.random() * 9) + 1;
-                //foundAValidPos = checkValidPosition(x, y, val);
-                foundAValidPos = possible(x, y, val);
+                foundAValidPos = checkValidPosition(x, y, val);
                 if (foundAValidPos) {
                     break;
                 }
