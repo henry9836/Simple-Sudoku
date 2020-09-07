@@ -432,7 +432,7 @@ $(document).ready(function () {
     console.log("jQuery Done.");
 
     $("h1").on("click", function () {
-        $(this).text("My Final Message Goodbye");
+        $(this).text("Simple Sukdou");
         $("h1").animate({ left: '250px' });
     });
 
