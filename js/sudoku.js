@@ -1,3 +1,10 @@
+//Difficulty
+const DIFFICULTY = {
+    EASY: 5,
+    MED: 4,
+    HARD: 3
+};
+
 //Grid
 grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -58,9 +65,11 @@ gridH = [
     [0, 0, 0, 9, 0, 0, 0, 5, 0],
     [0, 0, 6, 0, 3, 0, 0, 7, 0]];
 
+let currentDifficulty = DIFFICULTY.MED;
 let maxSolveSteps = 100000;
 var currentStep = 0;
 var currentDepth = 0;
+
 
 //Replaces a grid
 function replaceGrid(newGrid) { 
@@ -376,6 +385,53 @@ function updateGrid() {
 function generate() {
 
     //Generate valid numbers
+    //012 345 678
+    //For each box in the grid
+    for (var xLoop = 0; xLoop < 8; xLoop += 3) {
+        for (var yLoop = 0; yLoop < 8; yLoop += 3) {
+            console.log("X: " + xLoop.toString() + " || Y: " + yLoop.toString());
+
+            let foundASpot = false;
+            let placedNumber = false;
+
+            //Pick a random location in the grid
+            xPos = xLoop + (Math.floor(Math.random() * 3));
+            yPos = yLoop + (Math.floor(Math.random() * 3));
+
+            //Picks another spot if random spot has a zero
+            if (grid[yPos][xPos] == 0) {
+                for (var tmpX = 0; tmpX < 3; tmpX++) {
+                    for (var tmpY = 0; tmpY < 3; tmpY++) {
+                        if (grid[yLoop + tmpY][xLoop + tmpX] == 0) {
+                            yPos = yLoop + tmpY;
+                            xPos = xLoop + tmpX;
+                            foundASpot = true;
+                            break;
+                        }
+                    }
+                    if (foundASpot == true) {
+                        break;
+                    }
+                }
+            }
+            else {
+                foundASpot = true;
+            }
+
+            //Generate a random number in position
+            while (!foundASpot) {
+                var num = Math.floor(Math.random() * 9) + 1;
+                foundASpot = checkValidPosition(xPos, yPos, val);
+            }
+
+
+;        }
+    }
+
+    
+
+
+    //Generate valid numbers
     for (var i = 0; i < ((45 - $("#diffSlider").val()) + 18); i++) {
         var foundAValidPos = false;
         var x = 0;
@@ -483,8 +539,31 @@ $(document).ready(function () {
         }
     });
 
+    $("#EasyButton").on("click", function () {
+        currentDifficulty = DIFFICULTY.EASY;
+    });
+
+    $("#MedButton").on("click", function () {
+        currentDifficulty = DIFFICULTY.MED;
+    });
+
+    $("#HardButton").on("click", function () {
+        currentDifficulty = DIFFICULTY.HARD;
+    });
+
     //Random Slider Value
     $("#diffSlider").val(Math.floor(Math.random() * 27) + 18);
+    var coin = Math.random() * 3
+    if (coin == 0) {
+        currentDifficulty = DIFFICULTY.EASY;
+    }
+    else if (coin == 1) {
+        currentDifficulty = DIFFICULTY.MED;
+    }
+    else {
+        currentDifficulty = DIFFICULTY.HARD;
+    }
+
 
     reset();
 
