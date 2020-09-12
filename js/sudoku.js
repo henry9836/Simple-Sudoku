@@ -1,8 +1,8 @@
 //Difficulty
 const DIFFICULTY = {
-    EASY: 5,
-    MED: 4,
-    HARD: 3
+    EASY: 4,
+    MED: 3,
+    HARD: 2
 };
 
 //Grid Temporary
@@ -394,6 +394,13 @@ function checkValidPosition(x, y, val) {
 
 //Reset Game
 function reset() {
+    //Reset header
+    $("h1").html(" Simple Sudoku ");
+
+    //Lock Button
+    $("#reset").removeClass("active");
+    $("#reset").addClass("disabled");
+
     //Clear Values
     clearGrid();
     generate();
@@ -533,21 +540,35 @@ function generate() {
 
     //Display new grid
     updateGrid();
+
+    //Unlock Button
+    $("#reset").removeClass("disabled");
+    $("#reset").addClass("active");
 }
 
 function switchDiff(newDiff) {
+    $("#diffButton").removeClass("btn-success");
+    $("#diffButton").removeClass("btn-warning");
+    $("#diffButton").removeClass("btn-danger");
+
     if (newDiff == DIFFICULTY.EASY) {
         currentDifficulty = DIFFICULTY.EASY;
         $("#diffButton").html("Easy");
+        $("#diffButton").addClass("btn-success");
     }
     else if (newDiff == DIFFICULTY.MED) {
         currentDifficulty = DIFFICULTY.MED;
         $("#diffButton").html("Medium");
+        $("#diffButton").addClass("btn-warning");
     }
     else {
         currentDifficulty = DIFFICULTY.HARD;
         $("#diffButton").html("Hard");
+        $("#diffButton").addClass("btn-danger");
     }
+
+
+    //$("#diffButton").html('<button class="btn btn-warning dropdown-toggle" id="diffButton" type="button" data-toggle="dropdown">' + 'Hard' + '<span class="caret"></span></button >');
 }
 
 $(document).ready(function () {
@@ -601,26 +622,25 @@ $(document).ready(function () {
     $("#submit").on("click", function () {
         console.log("submit pressed");
         if (checkGridCondition()) {
+            $("h1").html("You Win!");
             console.log("YOU DID IT!");
         }
         else {
+            $("h1").html("Grid Not Solved");
             console.log("Grid not solved")
         }
     });
 
     $("#EasyButton").on("click", function () {
-        currentDifficulty = DIFFICULTY.EASY;
-        $("#diffButton").html("Easy");
+        switchDiff(DIFFICULTY.EASY);
     });
 
     $("#MedButton").on("click", function () {
-        currentDifficulty = DIFFICULTY.MED;
-        $("#diffButton").html("Medium");
+        switchDiff(DIFFICULTY.MED);
     });
 
     $("#HardButton").on("click", function () {
-        currentDifficulty = DIFFICULTY.HARD;
-        $("#diffButton").html("Hard");
+        switchDiff(DIFFICULTY.HARD);
     });
 
     //Random Slider Value
