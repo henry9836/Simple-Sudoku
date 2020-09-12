@@ -116,43 +116,46 @@ function testRun() {
     if (grid.length != 9 || grid[0].length != 9) {
         throw 'Grid is corrupted!';
     }   
-
     solve();
+
     console.log("-- GRID PRESET 2 --");
     loadNewGrid(2);
     if (grid.length != 9 || grid[0].length != 9) {
         throw 'Grid is corrupted!';
     }   
-
     solve();
+
     console.log("-- GRID PRESET 3 --");
     loadNewGrid(3);
     if (grid.length != 9 || grid[0].length != 9) {
         throw 'Grid is corrupted!';
     }   
-
     solve();
-    console.log("-- GRID RANDOM 1 --");
+
+    console.log("-- GRID RANDOM EASY --");
+    switchDiff(DIFFICULTY.EASY);
     reset();
     if (grid.length != 9 || grid[0].length != 9) {
         throw 'Grid is corrupted!';
     }   
-
     solve();
-    console.log("-- GRID RANDOM 2 --");
+
+    console.log("-- GRID RANDOM MED --");
+    switchDiff(DIFFICULTY.MED);
     reset();
     if (grid.length != 9 || grid[0].length != 9) {
         throw 'Grid is corrupted!';
     }   
-
     solve();
-    console.log("-- GRID RANDOM 3 --");
+
+    console.log("-- GRID RANDOM HARD --");
+    switchDiff(DIFFICULTY.HARD);
     reset();
     if (grid.length != 9 || grid[0].length != 9) {
         throw 'Grid is corrupted!';
     }   
-
     solve();
+
     console.log("======================");
     console.log(" [ TEST RUN END ]")
     console.log("======================");
@@ -318,7 +321,7 @@ function solveRecursive() {
     }
 
     //Grid is filled with numbers thus we have solved it
-    console.log("SOLUTION FOUND, PUZZLE IS NOW SOLVED!!!");
+    //console.log("SOLUTION FOUND, PUZZLE IS NOW SOLVED!!!");
     return true;
 }
 
@@ -532,6 +535,21 @@ function generate() {
     updateGrid();
 }
 
+function switchDiff(newDiff) {
+    if (newDiff == DIFFICULTY.EASY) {
+        currentDifficulty = DIFFICULTY.EASY;
+        $("#diffButton").html("Easy");
+    }
+    else if (newDiff == DIFFICULTY.MED) {
+        currentDifficulty = DIFFICULTY.MED;
+        $("#diffButton").html("Medium");
+    }
+    else {
+        currentDifficulty = DIFFICULTY.HARD;
+        $("#diffButton").html("Hard");
+    }
+}
+
 $(document).ready(function () {
     console.log("Invoking jQuery...");
     console.log($("h1").text());
@@ -609,16 +627,13 @@ $(document).ready(function () {
     $("#diffSlider").val(Math.floor(Math.random() * 27) + 18);
     var coin = Math.floor(Math.random() * 3);
     if (coin == 0) {
-        currentDifficulty = DIFFICULTY.EASY;
-        $("#diffButton").html("Easy");
+        switchDiff(DIFFICULTY.EASY);
     }
     else if (coin == 1) {
-        currentDifficulty = DIFFICULTY.MED;
-        $("#diffButton").html("Medium");
+        switchDiff(DIFFICULTY.MED);
     }
     else {
-        currentDifficulty = DIFFICULTY.HARD;
-        $("#diffButton").html("Hard");
+        switchDiff(DIFFICULTY.HARD);
     }
 
 
