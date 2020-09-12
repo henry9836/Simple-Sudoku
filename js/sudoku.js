@@ -5,6 +5,31 @@ const DIFFICULTY = {
     HARD: 3
 };
 
+//Grid Temporary
+gridTmpNewState = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+
+
+//Grid Temporary
+gridTmp = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+
 //Grid
 grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -72,7 +97,7 @@ var currentDepth = 0;
 
 
 //Replaces a grid
-function replaceGrid(newGrid) { 
+function copyGrid(newGrid) { 
     var tmp = [];
     for (var i = 0; i < newGrid.length; i++) {
         tmp[i] = newGrid[i].slice();
@@ -136,7 +161,7 @@ function testRun() {
 
 function clearGrid() {
 
-    grid = replaceGrid(gridEmpty);
+    grid = copyGrid(gridEmpty);
 
 }
 
@@ -146,13 +171,13 @@ function loadNewGrid(mode) {
     clearGrid();
 
     if (mode == 1) {
-        grid = replaceGrid(gridT);
+        grid = copyGrid(gridT);
     }
     else if (mode == 2) {
-        grid = replaceGrid(gridE);
+        grid = copyGrid(gridE);
     }
     else if (mode == 3) {
-        grid = replaceGrid(gridH);
+        grid = copyGrid(gridH);
     }
 
     if (grid.length != 9 || grid[0].length != 9) {
@@ -251,7 +276,6 @@ function checkGridCondition() {
     return true;
 }
 
-//Rewrite 
 
 function solveRecursive() {
 
@@ -384,100 +408,127 @@ function updateGrid() {
 //Generate a grid
 function generate() {
 
+    clearGrid();
+
+    console.log("Generate Called")
+
     //Generate valid numbers
     //012 345 678
     //For each box in the grid
     for (var xLoop = 0; xLoop < 8; xLoop += 3) {
         for (var yLoop = 0; yLoop < 8; yLoop += 3) {
-            console.log("X: " + xLoop.toString() + " || Y: " + yLoop.toString());
+            //console.log("X: " + xLoop.toString() + " || Y: " + yLoop.toString());
 
-            let foundASpot = false;
-            let placedNumber = false;
+            //Get amount of numbers to generate
+            var numToGenerate = currentDifficulty + (Math.floor(Math.random() * 2));
 
-            //Pick a random location in the grid
-            xPos = xLoop + (Math.floor(Math.random() * 3));
-            yPos = yLoop + (Math.floor(Math.random() * 3));
+            //For the amount of numbers to generate
+            for (var genNum = 0; genNum < numToGenerate; genNum++) {
 
-            //Picks another spot if random spot has a zero
-            if (grid[yPos][xPos] == 0) {
-                for (var tmpX = 0; tmpX < 3; tmpX++) {
-                    for (var tmpY = 0; tmpY < 3; tmpY++) {
-                        if (grid[yLoop + tmpY][xLoop + tmpX] == 0) {
-                            yPos = yLoop + tmpY;
-                            xPos = xLoop + tmpX;
-                            foundASpot = true;
+                let foundASpot = false;
+
+                //Pick a random location in the grid
+                xPos = xLoop + (Math.floor(Math.random() * 3));
+                yPos = yLoop + (Math.floor(Math.random() * 3));
+
+                //Picks another spot if random spot is not zero
+                if (grid[yPos][xPos] != 0) {
+                    for (var tmpX = 0; tmpX < 3; tmpX++) {
+                        for (var tmpY = 0; tmpY < 3; tmpY++) {
+                            if (grid[yLoop + tmpY][xLoop + tmpX] == 0) {
+                                yPos = yLoop + tmpY;
+                                xPos = xLoop + tmpX;
+                                foundASpot = true;
+                                break;
+                            }
+                        }
+                        if (foundASpot == true) {
                             break;
                         }
                     }
-                    if (foundASpot == true) {
+                }
+                else {
+                    foundASpot = true;
+                }
+
+                var count = 0;
+
+                //Generate a random number in position
+                while (true) {
+                    var num = Math.floor(Math.random() * 9) + 1;
+
+                    //If we haven't exceeded our max random attempt count
+                    if (count < 10) {
+                        if (checkValidPosition(xPos, yPos, num)) {
+                            //Backup grid before modifying
+                            gridTmp = copyGrid(grid);
+
+                            //Modify Grid
+                            grid[yPos][xPos] = num;
+
+                            //Make a backup of the new grid step
+                            gridTmpNewState = copyGrid(grid);
+
+                            //If the grid is solveable
+                            if (solveRecursive()) {
+                                //Restore Backup Of Modified Step
+                                grid = copyGrid(gridTmpNewState);
+                                break;
+                            }
+                            //The new placement is impossible to solve from
+                            else {
+                                //restore backup
+                                grid = copyGrid(gridTmp);
+                            }
+                            //break;
+                        }
+                    }
+                    //Find the correct number manually
+                    else {
+                        for (var i = 1; i < 10; i++) {
+                            if (checkValidPosition(xPos, yPos, i)) {
+                                //Backup grid before modifying
+                                gridTmp = copyGrid(grid);
+
+                                //Modify Grid
+                                grid[yPos][xPos] = i;
+
+                                //Make a backup of the new grid step
+                                gridTmpNewState = copyGrid(grid);
+
+                                //If the grid is solveable
+                                if (solveRecursive()) {
+                                    //Restore Backup Of Modified Step
+                                    grid = copyGrid(gridTmpNewState);
+                                    break;
+                                }
+                                //The new placement is impossible to solve from
+                                else {
+                                    //restore backup
+                                    grid = copyGrid(gridTmp);
+                                }
+                                //break;
+                            }
+                        }
+                        //Cannot place any numbers in this spot
                         break;
                     }
+
+                    count++;
                 }
             }
-            else {
-                foundASpot = true;
-            }
-
-            //Generate a random number in position
-            while (!foundASpot) {
-                var num = Math.floor(Math.random() * 9) + 1;
-                foundASpot = checkValidPosition(xPos, yPos, val);
-            }
-
 
 ;        }
     }
 
-    
-
-
-    //Generate valid numbers
-    for (var i = 0; i < ((45 - $("#diffSlider").val()) + 18); i++) {
-        var foundAValidPos = false;
-        var x = 0;
-        var y = 0;
-        var val = 1;
-        var counter = 0;
-        while (!foundAValidPos) {
-            x = Math.floor(Math.random() * 9);
-            y = Math.floor(Math.random() * 9);
-
-            //Break out of bad loop
-            if (counter > 75) {
-                //Find an empty spot
-                for (var xPos = 0; xPos < 9; xPos++) {
-                    for (var yPos = 0; yPos < 9; yPos++) {
-                        if (grid[yPos][xPos] == 0) {
-                            x = xPos;
-                            y = yPos;
-                        }
-                    }
-                }
-            }
-            if (counter > 100) {
-                break;
-            }
-
-            if (grid[y][x] == 0) {
-                val = Math.floor(Math.random() * 9) + 1;
-                foundAValidPos = checkValidPosition(x, y, val);
-                if (foundAValidPos) {
-                    break;
-                }
-                //console.log(foundAValidPos);
-            }
-            counter++;
-        }
-        if (foundAValidPos) {
-            grid[y][x] = val;
-        }
-        //Ran out of attempts to place numbers
-        else {
-            break;
-        }
+    //This should never be hit
+    if (!solveRecursive()) {
+        generate();
     }
 
+    grid = copyGrid(gridTmpNewState);
 
+    //Display new grid
     updateGrid();
 }
 
@@ -541,27 +592,33 @@ $(document).ready(function () {
 
     $("#EasyButton").on("click", function () {
         currentDifficulty = DIFFICULTY.EASY;
+        $("#diffButton").html("Easy");
     });
 
     $("#MedButton").on("click", function () {
         currentDifficulty = DIFFICULTY.MED;
+        $("#diffButton").html("Medium");
     });
 
     $("#HardButton").on("click", function () {
         currentDifficulty = DIFFICULTY.HARD;
+        $("#diffButton").html("Hard");
     });
 
     //Random Slider Value
     $("#diffSlider").val(Math.floor(Math.random() * 27) + 18);
-    var coin = Math.random() * 3
+    var coin = Math.floor(Math.random() * 3);
     if (coin == 0) {
         currentDifficulty = DIFFICULTY.EASY;
+        $("#diffButton").html("Easy");
     }
     else if (coin == 1) {
         currentDifficulty = DIFFICULTY.MED;
+        $("#diffButton").html("Medium");
     }
     else {
         currentDifficulty = DIFFICULTY.HARD;
+        $("#diffButton").html("Hard");
     }
 
 
