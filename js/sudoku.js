@@ -566,10 +566,52 @@ function switchDiff(newDiff) {
         $("#diffButton").html("Hard");
         $("#diffButton").addClass("btn-danger");
     }
-
-
-    //$("#diffButton").html('<button class="btn btn-warning dropdown-toggle" id="diffButton" type="button" data-toggle="dropdown">' + 'Hard' + '<span class="caret"></span></button >');
 }
+
+function validateInput(element) {
+    console.log("Validate Input Called! " + element);
+
+    //Get value
+    var input = $("#" + element).val();
+
+    //No value
+    if (input == "") {
+        $("#" + element).val("0");
+        return;
+    }
+
+    //If the input is a number
+    if (!Number.isNaN(parseInt(input))) {
+        console.log("num");
+
+        //If the length of the string is more than one character then replace the string with the last character
+        if (input.length > 1) {
+            input = input[input.length - 1];
+        }
+
+        //Process processed input
+        var inputNum = parseInt(input);
+
+        //Detect Bad Numbers
+        if (inputNum <= 0 || 9 < inputNum) {
+            $("#" + element).val("0");
+            grid[element[0]][element[1]] = 0;
+            return;
+        }
+
+        //Update grid
+        grid[element[0]][element[1]] = inputNum;
+
+        //Update Visible Grid
+        $("#" + element).val(inputNum.toString());
+    }
+    else {
+        $("#" + element).val("0");
+        grid[element[0]][element[1]] = 0;
+    }
+
+}
+
 
 $(document).ready(function () {
     console.log("Invoking jQuery...");

@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\js"
+    "\\js",
+    "\\resources"
   ],
-  "SelectedNode": "\\js\\sudoku.js",
+  "SelectedNode": "\\resources\\style.css",
   "PreviewInSolutionExplorer": false
 }
