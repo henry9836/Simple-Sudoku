@@ -92,6 +92,8 @@ gridH = [
 
 let currentDifficulty = DIFFICULTY.MED;
 let maxSolveSteps = 100000;
+let hintsLeft = 3;
+let hintsLeftStart = 3;
 var currentStep = 0;
 var currentDepth = 0;
 
@@ -401,17 +403,66 @@ function reset() {
     $("#reset").removeClass("active");
     $("#reset").addClass("disabled");
 
+    //Reset hint button
+    hintsLeft = hintsLeftStart;
+    $("#hint").removeClass("disabled");
+    $("#hint").html("Hint " + hintsLeft.toString());
+
+
+    //Unlock Grid Inputs
+    for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+            var element = "#" + i + j;
+            $(element).removeAttr('disabled');
+        }
+    }
     //Clear Values
     clearGrid();
     generate();
 }
 
+//Update visible grid
 function updateGrid() {
     for (var i = 0; i < 9; i++) {
         for (var j = 0; j < 9; j++) {
             var element = "#" + i + j;
             $(element).val(grid[i][j]);
         }
+    }
+}
+
+//Give the user a hint
+function hint() {
+    if (hintsLeft > 0) {
+        //Find the first zero or wrong value then change and disable the input
+        for (var x = 0; x < 9; x++) {
+            for (var y = 0; y < 9; y++) {
+                if (grid[y][x] != gridTmp[y][x]) {
+
+                    //Update value
+                    grid[y][x] = gridTmp[y][x];
+
+                    //Disable input
+                    $("#" + y.toString() + x.toString()).attr('disabled', 'disabled');
+
+                    //Update visible grid
+                    updateGrid();
+
+                    //Use up a hint
+                    hintsLeft--;
+
+                    //Update counter on button
+                    $("#hint").html("Hint " + hintsLeft.toString());
+
+                    if (hintsLeft <= 0) {
+                        $("#hint").addClass("disabled");
+                    }
+
+                    return;
+                }
+            }
+        }
+
     }
 }
 
@@ -536,7 +587,20 @@ function generate() {
         generate();
     }
 
+    //Copy grids for later use
+    gridTmp = copyGrid(grid);
     grid = copyGrid(gridTmpNewState);
+    
+
+    //Lock inputs
+    for (var x = 0; x < 9; x++) {
+        for (var y = 0; y < 9; y++) {
+            var element = "#" + y + x;
+            if (grid[y][x] != 0) {
+                $(element).attr('disabled', 'disabled');
+            }
+        }
+    }
 
     //Display new grid
     updateGrid();
@@ -555,21 +619,32 @@ function switchDiff(newDiff) {
         currentDifficulty = DIFFICULTY.EASY;
         $("#diffButton").html("Easy");
         $("#diffButton").addClass("btn-success");
+        hintsLeft = 3;
+        hintsLeftStart = 3;
+        $("#hint").html("Hint " + hintsLeft.toString());
+        $("#hint").removeClass("disabled");
     }
     else if (newDiff == DIFFICULTY.MED) {
         currentDifficulty = DIFFICULTY.MED;
         $("#diffButton").html("Medium");
         $("#diffButton").addClass("btn-warning");
+        hintsLeft = 2;
+        hintsLeftStart = 2;
+        $("#hint").html("Hint " + hintsLeft.toString());
+        $("#hint").removeClass("disabled");
     }
     else {
         currentDifficulty = DIFFICULTY.HARD;
         $("#diffButton").html("Hard");
         $("#diffButton").addClass("btn-danger");
+        hintsLeft = 1;
+        hintsLeftStart = 1;
+        $("#hint").html("Hint " + hintsLeft.toString());
+        $("#hint").removeClass("disabled");
     }
 }
 
 function validateInput(element) {
-    console.log("Validate Input Called! " + element);
 
     //Get value
     var input = $("#" + element).val();
@@ -582,7 +657,6 @@ function validateInput(element) {
 
     //If the input is a number
     if (!Number.isNaN(parseInt(input))) {
-        console.log("num");
 
         //If the length of the string is more than one character then replace the string with the last character
         if (input.length > 1) {
@@ -604,6 +678,8 @@ function validateInput(element) {
 
         //Update Visible Grid
         $("#" + element).val(inputNum.toString());
+
+        
     }
     else {
         $("#" + element).val("0");
@@ -671,6 +747,10 @@ $(document).ready(function () {
             $("h1").html("Grid Not Solved");
             console.log("Grid not solved")
         }
+    });
+
+    $("#hint").on("click", function () {
+        hint();
     });
 
     $("#EasyButton").on("click", function () {
