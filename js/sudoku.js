@@ -734,7 +734,9 @@ $(document).ready(function () {
 
     $("#solve").on("click", function () {
         console.log("solve pressed");
-        solve();
+        //solve(); no need to solve since we solve at start
+        grid = copyGrid(gridTmp);
+        updateGrid();
     });
 
     $("#submit").on("click", function () {
