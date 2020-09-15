@@ -434,6 +434,37 @@ function updateGrid() {
 //Give the user a hint
 function hint() {
     if (hintsLeft > 0) {
+
+        //Try pick a random spot
+        for (var i = 0; i < 10; i++) {
+            let x = Math.floor(Math.random() * 9) + 1;
+            let y = Math.floor(Math.random() * 9) + 1;
+
+            if (grid[y][x] == 0) {
+                //Update value
+                grid[y][x] = gridTmp[y][x];
+
+                //Disable input
+                $("#" + y.toString() + x.toString()).attr('disabled', 'disabled');
+
+                //Update visible grid
+                updateGrid();
+
+                //Use up a hint
+                hintsLeft--;
+
+                //Update counter on button
+                $("#hint").html("Hint " + hintsLeft.toString());
+
+                if (hintsLeft <= 0) {
+                    $("#hint").addClass("disabled");
+                }
+
+                return;
+            }
+
+        }
+
         //Find the first zero or wrong value then change and disable the input
         for (var x = 0; x < 9; x++) {
             for (var y = 0; y < 9; y++) {
