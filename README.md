@@ -1,6 +1,4 @@
-# Simple Sudoku
-
-![Simple Sudoku GIF](https://raw.githubusercontent.com/henry9836/Simple-Sudoku/master/resources/gif.gif)
+![Simple Sudoku](https://raw.githubusercontent.com/henry9836/Simple-Sudoku/master/resources/gif.gif)
 
 A Simple Sudoku game built using jQuery and Bootstrap.
 
